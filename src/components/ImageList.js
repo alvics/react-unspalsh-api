@@ -1,14 +1,12 @@
 import React from 'react';
+import '../components/ImageList.css';
+import ImageCard from './ImageCard';
 
 export default function ImageList(props) {
-  console.log(props);
+  // console.log(props);
   const images = props.images.map((image) => {
-    return (
-      <div key={image.id}>
-        <img src={image.urls.regular} alt={image.alt_description} />
-      </div>
-    );
+    return <ImageCard key={image.id} image={image} />;
   });
 
-  return <div>{images}</div>;
+  return <div className="img-wrapper ui segment">{images}</div>;
 }
