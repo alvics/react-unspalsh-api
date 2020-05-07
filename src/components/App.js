@@ -1,26 +1,19 @@
 import React, { Component } from 'react';
-import unsplash from '../api/Unsplash';
-import SearchBar from './SearchBar';
-import ImageList from './ImageList';
+import { BrowserRouter, Switch, Route } from 'react-router-dom';
+
+import ImageSingle from './ImageSingle';
+import HomePage from './HomePage';
 
 class App extends Component {
-  state = { images: [] };
-
-  onSearchSubmit = async (term) => {
-    const response = await unsplash.get(`/search/photos`, {
-      params: { query: term }
-    });
-
-    this.setState({ images: response.data.results });
-  };
-
   render() {
     return (
       <div className="ui container" style={{ marginTop: '10px' }}>
-        <h1>Pics App</h1>
-        <SearchBar userSubmit={this.onSearchSubmit} />
-        <ImageList images={this.state.images} />
-        Found: {this.state.images.length} images
+        <BrowserRouter>
+          <Switch>
+            <Route exact path="/" component={HomePage} />
+            <Route path="/:id" component={ImageSingle} />
+          </Switch>
+        </BrowserRouter>
       </div>
     );
   }
