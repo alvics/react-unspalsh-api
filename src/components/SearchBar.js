@@ -13,10 +13,14 @@ export default class SearchBar extends Component {
 
   render() {
     return (
-      <div className="ui segment">
-        <form onSubmit={this.onFormSubmit} className="ui form">
+      <div id="hero" className="ui segment">
+        <form id="hero-form" onSubmit={this.onFormSubmit} className="ui form">
           <div className="field">
-            <label>Image Search</label>
+            <div id="hero-text">
+              <h1>Pics App</h1>
+              <p>Image Search Application</p>
+            </div>
+
             <input
               placeholder="Search..."
               type="text"

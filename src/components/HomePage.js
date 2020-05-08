@@ -16,12 +16,12 @@ export default class HomePage extends Component {
 
   render() {
     return (
-      <div>
-        <h1>Pics App</h1>
+      <>
         <SearchBar userSubmit={this.onSearchSubmit} />
-        <ImageList images={this.state.images} />
-        Found: {this.state.images.length} images
-      </div>
+        <div className="ui container" style={{ margin: '20px  0' }}>
+          <ImageList images={this.state.images} />
+        </div>
+      </>
     );
   }
 }

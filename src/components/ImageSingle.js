@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+
 import axios from 'axios';
 
 const ACCESS_KEY = process.env.REACT_APP_ACCESS_KEY_TOKEN;
@@ -6,11 +7,12 @@ const ACCESS_KEY = process.env.REACT_APP_ACCESS_KEY_TOKEN;
 export default class ImageSingle extends Component {
   state = {
     image: '',
-    preview_photos: ''
+    preview_photos: [],
+    urls: {}
   };
 
   componentDidMount() {
-    console.log('props!!', this.props);
+    // console.log('props!!', this.props);
     let id = this.props.match.params.id;
 
     axios
@@ -21,10 +23,10 @@ export default class ImageSingle extends Component {
       })
       .then((res) => {
         this.setState({
-          image: res.data
+          image: res.data,
+          images: res.data.related_collections.results
         });
-        console.log('SingleImage-Stuff!!', res.data);
-        // console.log('image!!', res.data.urls.full);
+        // console.log('SingleImage-Stuff!!', res.data);
       });
     this.setState({
       id: id
@@ -32,7 +34,8 @@ export default class ImageSingle extends Component {
   }
 
   render() {
-    const singleImage = this.state.image ? (
+    const img = this.state.image;
+    const singleImage = img ? (
       <div className="ui segment">
         <h1>{this.state.image.alt_description}</h1>
         <div
@@ -44,26 +47,26 @@ export default class ImageSingle extends Component {
           }}
         >
           <img
+            className="ui fluid image"
             style={{ borderRadius: '6px' }}
-            src={this.state.image.urls.regular}
-            alt={this.state.image.alt_description}
+            src={img.urls.regular}
+            alt={img.alt_description}
           />
         </div>
 
         <br />
-        <small>Total downloads: {this.state.image.downloads}</small>
-        <h4>More</h4>
-
-        {this.state.image.related_collections.results.map((img) => {
-          return (
-            <div>
-              <div key={img.id} style={{ display: 'inline-flex' }}>
-                <img src={img} alt={img.title} />
-              </div>
-              {img.total_photos}
-            </div>
-          );
-        })}
+        <small>Total downloads: {img.downloads} </small>
+        <small style={{ float: 'right', paddingRight: '20px' }}>
+          <i className=" red heart icon" style={{ paddingRight: '-5px' }}>
+            <span style={{ paddingRight: '3px' }}></span>
+            {img.likes}
+          </i>
+        </small>
+        <p>{img.description}</p>
+        <h4>Photographer: </h4>
+        <div style={{ display: 'flex' }}>
+          <p>{img.user.name}</p>
+        </div>
       </div>
     ) : (
       <div>
@@ -71,6 +74,10 @@ export default class ImageSingle extends Component {
       </div>
     );
 
-    return <>{singleImage}</>;
+    return (
+      <div className="ui container" style={{ margin: '20px  0' }}>
+        {singleImage}
+      </div>
+    );
   }
 }
